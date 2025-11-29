@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -33,7 +35,7 @@ android {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 dependencies {
@@ -51,5 +53,9 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     //network
     implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp.logging.interceptor)
     //di
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 }
