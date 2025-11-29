@@ -2,10 +2,10 @@ package com.mikhaylenko.weatherdemo.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val LightBackground = Color(0xFFF7F7F7) // Very light grey/white background
+val DarkText = Color(0xFF212121)       // Dark grey/black for primary text
+val LightText = Color(0xFF757575)      // Lighter grey for secondary text
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val CardBackground = Color(0xFFFFFFFF)  // White for cards
+val DividerColor = Color(0xFFE0E0E0)    // Light grey for dividers
+val IconColor = Color(0xFF212121)       // Dark icon color
