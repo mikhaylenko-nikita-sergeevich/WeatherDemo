@@ -13,16 +13,16 @@ fun ErrorDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = "Error") },
+        title = { Text(text = "Ошибка") },
         text = { Text(text = errorMessage) },
         confirmButton = {
             TextButton(onClick = onRetry) {
-                Text("Retry")
+                Text("Повторить")
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Dismiss")
+                Text("Закрыть")
             }
         }
     )

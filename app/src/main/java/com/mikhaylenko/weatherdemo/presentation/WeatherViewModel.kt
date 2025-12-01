@@ -26,11 +26,11 @@ class WeatherViewModel @Inject constructor(
         _weatherState.value = WeatherState.Loading
         viewModelScope.launch {
             repository.getWeatherForecast()
-                .onSuccess {
-                    _weatherState.value = WeatherState.Success(it)
+                .onSuccess { response ->
+                    _weatherState.value = WeatherState.Success(response)
                 }
-                .onFailure {
-                    _weatherState.value = WeatherState.Error(it.localizedMessage ?: "Unknown error")
+                .onFailure { error ->
+                    _weatherState.value = WeatherState.Error(error.localizedMessage ?: "Unknown error")
                 }
         }
     }

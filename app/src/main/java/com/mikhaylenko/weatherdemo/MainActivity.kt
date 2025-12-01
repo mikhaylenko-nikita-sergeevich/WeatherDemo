@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -60,11 +61,19 @@ fun WeatherScreen(state: WeatherState, onRetry: () -> Unit) {
             }
             is WeatherState.Success -> {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    CurrentWeatherCard(location = state.weather.location, currentWeather = state.weather.current)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    HourlyForecastRow(hourlyForecast = state.weather.forecast.forecastday.first().hour)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    DailyForecastList(dailyForecast = state.weather.forecast.forecastday)
+                    Box(modifier = Modifier.weight(1f).fillMaxSize()) {
+                        CurrentWeatherCard(location = state.weather.location, currentWeather = state.weather.current)
+                    }
+                    HourlyForecastRow(
+                        hourlyForecast = state.weather.forecast.forecastday.first().hour,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(16.dp)) // Spacing between hourly and daily
+                    DailyForecastList(
+                        dailyForecast = state.weather.forecast.forecastday,
+                        modifier = Modifier.weight(1f) // Daily forecast takes remaining space
+                    )
+                    Spacer(modifier = Modifier.height(16.dp)) // Bottom padding for the entire content
                 }
             }
             is WeatherState.Error -> {

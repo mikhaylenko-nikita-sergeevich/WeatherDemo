@@ -3,8 +3,11 @@ package com.mikhaylenko.weatherdemo.presentation.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudQueue
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,23 +15,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mikhaylenko.weatherdemo.data.model.Hour
-import com.mikhaylenko.weatherdemo.ui.theme.CardBackground
-import com.mikhaylenko.weatherdemo.ui.theme.DarkText
-import com.mikhaylenko.weatherdemo.ui.theme.LightText
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun HourlyForecastRow(hourlyForecast: List<Hour>) {
+fun HourlyForecastRow(hourlyForecast: List<Hour>, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Hourly Forecast",
+            text = "Почасовой прогноз",
             style = MaterialTheme.typography.headlineSmall,
-            color = DarkText,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         LazyRow(
@@ -44,28 +44,29 @@ fun HourlyForecastRow(hourlyForecast: List<Hour>) {
 
 @Composable
 fun HourlyForecastItem(hour: Hour) {
-    val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+    val timeFormatter = SimpleDateFormat("HH:mm", Locale("ru"))
     val time = timeFormatter.format(Date(hour.timeEpoch * 1000))
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = CardBackground),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp) // Subtle elevation
     ) {
         Column(
             modifier = Modifier.padding(vertical = 12.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = time, style = MaterialTheme.typography.bodyMedium, color = DarkText)
+            Text(text = time, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
             Spacer(modifier = Modifier.height(8.dp))
-            // Placeholder for Weather Icon
-            Text(
-                text = "☁️", // Placeholder icon, replace with actual weather icon
-                style = MaterialTheme.typography.bodyLarge,
-                color = DarkText
+            // Weather Icon
+            Icon(
+                imageVector = Icons.Default.CloudQueue, // Placeholder icon
+                contentDescription = hour.condition.text,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "${hour.tempC.toInt()}°", style = MaterialTheme.typography.bodyLarge, color = DarkText)
+            Text(text = "${hour.tempC.toInt()}°", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
         }
     }
 }
