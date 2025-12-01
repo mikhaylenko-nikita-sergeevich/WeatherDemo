@@ -98,12 +98,11 @@ fun WeatherScreen(state: WeatherState, onRetry: () -> Unit) {
                             hourlyForecast = state.hourlyForecast,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(modifier = Modifier.height(16.dp)) // Spacing between hourly and daily
+                        Spacer(modifier = Modifier.height(16.dp))
                         DailyForecastList(
-                            dailyForecast = state.dailyForecast,
-                            modifier = Modifier.weight(1f) // Daily forecast takes remaining space
+                            dailyForecast = state.dailyForecast
                         )
-                        Spacer(modifier = Modifier.height(16.dp)) // Bottom padding for the entire content
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
 
