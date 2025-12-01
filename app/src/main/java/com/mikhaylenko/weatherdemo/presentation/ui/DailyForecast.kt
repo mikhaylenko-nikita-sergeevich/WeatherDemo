@@ -32,12 +32,11 @@ fun DailyForecastList(dailyForecast: List<Forecastday>, modifier: Modifier = Mod
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        LazyColumn(
+        Column(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(top = 8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp) // Smaller spacing for daily items
         ) {
-            items(dailyForecast) { day ->
+            dailyForecast.forEach { day ->
                 DailyForecastItem(day = day)
             }
         }

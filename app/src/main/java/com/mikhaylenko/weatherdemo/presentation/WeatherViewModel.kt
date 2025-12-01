@@ -10,6 +10,7 @@ import com.mikhaylenko.weatherdemo.data.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,10 @@ class WeatherViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _weatherState = MutableStateFlow<WeatherState>(WeatherState.Loading)
-    val weatherState: StateFlow<WeatherState> = _weatherState
+    val weatherState: StateFlow<WeatherState> = _weatherState.asStateFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
     init {
         fetchWeather()
@@ -43,8 +47,37 @@ class WeatherViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    _weatherState.value = WeatherState.Error(error.localizedMessage ?: "Unknown error")
+                    _weatherState.value =
+                        WeatherState.Error(error.localizedMessage ?: "Unknown error")
                 }
+        }
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+            try {
+                repository.getWeatherForecast()
+                    .onSuccess { response ->
+                        val allHours = response.forecast.forecastday.flatMap { it.hour }
+                        val upcoming24Hours = allHours.filter {
+                            it.timeEpoch >= response.location.localtimeEpoch
+                        }.take(24)
+
+                        _weatherState.value = WeatherState.Success(
+                            location = response.location,
+                            currentWeather = response.current,
+                            hourlyForecast = upcoming24Hours,
+                            dailyForecast = response.forecast.forecastday
+                        )
+                    }
+                    .onFailure { error ->
+                        _weatherState.value =
+                            WeatherState.Error(error.localizedMessage ?: "Unknown error")
+                    }
+            } finally {
+                _isRefreshing.value = false
+            }
         }
     }
 }
@@ -57,5 +90,6 @@ sealed class WeatherState {
         val hourlyForecast: List<Hour>,
         val dailyForecast: List<Forecastday>
     ) : WeatherState()
+
     data class Error(val message: String) : WeatherState()
 }
