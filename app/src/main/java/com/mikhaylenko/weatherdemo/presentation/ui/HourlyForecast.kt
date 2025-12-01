@@ -23,16 +23,16 @@ fun HourlyForecastRow(hourlyForecast: List<Hour>, modifier: Modifier = Modifier)
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
     ) {
         Text(
             text = "Почасовой прогноз",
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
         )
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(hourlyForecast) { hour ->
