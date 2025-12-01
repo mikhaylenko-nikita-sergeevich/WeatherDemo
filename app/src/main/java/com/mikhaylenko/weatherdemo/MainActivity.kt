@@ -92,15 +92,15 @@ fun WeatherScreen(state: WeatherState, onRetry: () -> Unit) {
                         Box(modifier = Modifier
                             .weight(1f)
                             .fillMaxSize()) {
-                            CurrentWeatherCard(location = state.weather.location, currentWeather = state.weather.current)
+                            CurrentWeatherCard(location = state.location, currentWeather = state.currentWeather)
                         }
                         HourlyForecastRow(
-                            hourlyForecast = state.weather.forecast.forecastday.first().hour,
+                            hourlyForecast = state.hourlyForecast,
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(modifier = Modifier.height(16.dp)) // Spacing between hourly and daily
                         DailyForecastList(
-                            dailyForecast = state.weather.forecast.forecastday,
+                            dailyForecast = state.dailyForecast,
                             modifier = Modifier.weight(1f) // Daily forecast takes remaining space
                         )
                         Spacer(modifier = Modifier.height(16.dp)) // Bottom padding for the entire content
