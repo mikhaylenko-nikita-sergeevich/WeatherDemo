@@ -20,7 +20,7 @@ import com.mikhaylenko.weatherdemo.R
 
 @Composable
 fun ErrorScreen(
-    errorMessage: String,
+    errorMessage: String?,
     onRetry: () -> Unit
 ) {
     Box(
@@ -40,7 +40,7 @@ fun ErrorScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = errorMessage,
+                text = errorMessage ?: stringResource(R.string.unknown_error),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center

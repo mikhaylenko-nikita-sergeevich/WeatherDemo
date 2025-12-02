@@ -26,56 +26,43 @@ class WeatherViewModel @Inject constructor(
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
     init {
-        fetchWeather()
+        loadWeather()
     }
 
-    fun fetchWeather() {
-        _weatherState.value = WeatherState.Loading
+    fun loadWeather() {
         viewModelScope.launch {
-            repository.getWeatherForecast()
-                .onSuccess { response ->
-                    val allHours = response.forecast.forecastday.flatMap { it.hour }
-                    val upcoming24Hours = allHours.filter {
-                        it.timeEpoch >= response.location.localtimeEpoch
-                    }.take(24)
-
-                    _weatherState.value = WeatherState.Success(
-                        location = response.location,
-                        currentWeather = response.current,
-                        hourlyForecast = upcoming24Hours,
-                        dailyForecast = response.forecast.forecastday
-                    )
-                }
-                .onFailure { error ->
-                    _weatherState.value =
-                        WeatherState.Error(error.localizedMessage ?: "Unknown error")
-                }
+            _weatherState.value = WeatherState.Loading
+            fetchWeather()
         }
     }
 
-    fun refresh() {
-        _isRefreshing.value = true
+    fun refreshWeather() {
         viewModelScope.launch {
-            repository.getWeatherForecast()
-                .onSuccess { response ->
-                    val allHours = response.forecast.forecastday.flatMap { it.hour }
-                    val upcoming24Hours = allHours.filter {
-                        it.timeEpoch >= response.location.localtimeEpoch
-                    }.take(24)
-
-                    _weatherState.value = WeatherState.Success(
-                        location = response.location,
-                        currentWeather = response.current,
-                        hourlyForecast = upcoming24Hours,
-                        dailyForecast = response.forecast.forecastday
-                    )
-                }
-                .onFailure { error ->
-                    _weatherState.value =
-                        WeatherState.Error(error.localizedMessage ?: "Unknown error")
-                }
+            _isRefreshing.value = true
+            fetchWeather()
             _isRefreshing.value = false
         }
+    }
+
+    private suspend fun fetchWeather() {
+        repository.getWeatherForecast()
+            .onSuccess { response ->
+                val allHours = response.forecast.forecastday.flatMap { it.hour }
+                val upcoming24Hours = allHours.filter {
+                    it.timeEpoch >= response.location.localtimeEpoch
+                }.take(24)
+
+                _weatherState.value = WeatherState.Success(
+                    location = response.location,
+                    currentWeather = response.current,
+                    hourlyForecast = upcoming24Hours,
+                    dailyForecast = response.forecast.forecastday
+                )
+            }
+            .onFailure { error ->
+                _weatherState.value =
+                    WeatherState.Error(error.localizedMessage)
+            }
     }
 }
 
@@ -88,5 +75,5 @@ sealed class WeatherState {
         val dailyForecast: List<Forecastday>
     ) : WeatherState()
 
-    data class Error(val message: String) : WeatherState()
+    data class Error(val message: String?) : WeatherState()
 }

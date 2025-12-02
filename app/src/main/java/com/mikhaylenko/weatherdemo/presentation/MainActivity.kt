@@ -36,8 +36,8 @@ class MainActivity : ComponentActivity() {
                 MainScreen(
                     state = state,
                     isRefreshing = isRefreshing,
-                    onRefresh = viewModel::refresh,
-                    onRetry = { viewModel.fetchWeather() }
+                    onRefresh = viewModel::refreshWeather,
+                    onRetry = { viewModel.loadWeather() }
                 )
             }
         }

@@ -10,4 +10,6 @@
     <string name="wind_icon_alt">Ветер</string>
 
     <string name="retry_btn">Повторить</string>
+
+    <string name="unknown_error">Неизвестная ошибка</string>
 </resources>
