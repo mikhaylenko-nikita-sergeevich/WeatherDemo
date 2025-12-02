@@ -2,11 +2,11 @@ package com.mikhaylenko.weatherdemo.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mikhaylenko.weatherdemo.data.WeatherRepository
 import com.mikhaylenko.weatherdemo.data.model.CurrentWeather
 import com.mikhaylenko.weatherdemo.data.model.Forecastday
 import com.mikhaylenko.weatherdemo.data.model.Hour
 import com.mikhaylenko.weatherdemo.data.model.Location
-import com.mikhaylenko.weatherdemo.data.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -7,12 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -22,10 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.mikhaylenko.weatherdemo.presentation.theme.WeatherDemoTheme
-import com.mikhaylenko.weatherdemo.presentation.ui.CurrentWeatherCard
-import com.mikhaylenko.weatherdemo.presentation.ui.DailyForecastList
 import com.mikhaylenko.weatherdemo.presentation.ui.ErrorScreen
-import com.mikhaylenko.weatherdemo.presentation.ui.HourlyForecastRow
+import com.mikhaylenko.weatherdemo.presentation.ui.WeatherScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,7 +33,7 @@ class MainActivity : ComponentActivity() {
             WeatherDemoTheme {
                 val state by viewModel.weatherState.collectAsState()
                 val isRefreshing by viewModel.isRefreshing.collectAsState()
-                WeatherScreen(
+                MainScreen(
                     state = state,
                     isRefreshing = isRefreshing,
                     onRefresh = viewModel::refresh,
@@ -51,7 +45,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun WeatherScreen(
+fun MainScreen(
     state: WeatherState,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
@@ -77,30 +71,12 @@ fun WeatherScreen(
                 }
 
                 is WeatherState.Success -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .weight(1f)
-                        ) {
-                            CurrentWeatherCard(
-                                location = state.location,
-                                currentWeather = state.currentWeather
-                            )
-                        }
-                        HourlyForecastRow(
-                            hourlyForecast = state.hourlyForecast,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        DailyForecastList(
-                            dailyForecast = state.dailyForecast
-                        )
-                    }
+                    WeatherScreen(
+                        location = state.location,
+                        currentWeather = state.currentWeather,
+                        hourlyForecast = state.hourlyForecast,
+                        dailyForecast = state.dailyForecast
+                    )
                 }
 
                 is WeatherState.Error -> {

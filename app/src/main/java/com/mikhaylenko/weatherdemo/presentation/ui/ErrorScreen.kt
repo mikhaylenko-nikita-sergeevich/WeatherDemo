@@ -21,11 +21,10 @@ import com.mikhaylenko.weatherdemo.R
 @Composable
 fun ErrorScreen(
     errorMessage: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier
+    onRetry: () -> Unit
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         contentAlignment = Alignment.Center
