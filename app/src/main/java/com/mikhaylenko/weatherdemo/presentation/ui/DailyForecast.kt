@@ -1,8 +1,13 @@
 package com.mikhaylenko.weatherdemo.presentation.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.material3.Card
@@ -13,11 +18,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mikhaylenko.weatherdemo.R
 import com.mikhaylenko.weatherdemo.data.model.Forecastday
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun DailyForecastList(dailyForecast: List<Forecastday>, modifier: Modifier = Modifier) {
@@ -27,7 +34,7 @@ fun DailyForecastList(dailyForecast: List<Forecastday>, modifier: Modifier = Mod
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Прогноз на 3 дня", // A title for the daily forecast section
+            text = stringResource(R.string.daily_forecast_title), // A title for the daily forecast section
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -60,7 +67,11 @@ fun DailyForecastItem(day: Forecastday) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = date, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+            Text(
+                text = date,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
             // Weather Icon
             Icon(
@@ -73,9 +84,17 @@ fun DailyForecastItem(day: Forecastday) {
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "${day.day.maxtempC.toInt()}°", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+                Text(
+                    text = "${day.day.maxtempC.toInt()}°",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "${day.day.mintempC.toInt()}°", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    text = "${day.day.mintempC.toInt()}°",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }

@@ -1,6 +1,15 @@
 package com.mikhaylenko.weatherdemo.presentation.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Waves
@@ -12,13 +21,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.TextStyle
+import com.mikhaylenko.weatherdemo.R
 import com.mikhaylenko.weatherdemo.data.model.CurrentWeather
 import com.mikhaylenko.weatherdemo.data.model.Location
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
@@ -33,7 +40,7 @@ fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
             modifier = Modifier
                 .padding(vertical = 24.dp, horizontal = 16.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(),
+                .fillMaxHeight(), // Ensure column fills available height
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween // Distribute content vertically
         ) {
@@ -43,7 +50,7 @@ fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "Сейчас",
+                text = stringResource(R.string.current_weather_title),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant // Lighter secondary text
             )
@@ -77,13 +84,16 @@ fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Waves, // Placeholder for wind icon
-                    contentDescription = "Ветер",
+                    contentDescription = stringResource(R.string.wind_icon_alt),
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Ветер ${currentWeather.windKph} км/ч",
+                    text = stringResource(
+                        R.string.wind_speed_format,
+                        currentWeather.windKph.toInt()
+                    ),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )

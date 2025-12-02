@@ -1,6 +1,13 @@
 package com.mikhaylenko.weatherdemo.presentation.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -13,10 +20,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mikhaylenko.weatherdemo.R
 import com.mikhaylenko.weatherdemo.data.model.Hour
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+
+private val hourlyTimeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
 @Composable
 fun HourlyForecastRow(hourlyForecast: List<Hour>, modifier: Modifier = Modifier) {
@@ -25,7 +37,7 @@ fun HourlyForecastRow(hourlyForecast: List<Hour>, modifier: Modifier = Modifier)
             .fillMaxWidth()
     ) {
         Text(
-            text = "Почасовой прогноз",
+            text = stringResource(R.string.hourly_forecast_title),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
@@ -44,8 +56,7 @@ fun HourlyForecastRow(hourlyForecast: List<Hour>, modifier: Modifier = Modifier)
 
 @Composable
 fun HourlyForecastItem(hour: Hour) {
-    val timeFormatter = SimpleDateFormat("HH:mm", Locale("ru"))
-    val time = timeFormatter.format(Date(hour.timeEpoch * 1000))
+    val time = hourlyTimeFormatter.format(Date(hour.timeEpoch * 1000))
 
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -56,7 +67,11 @@ fun HourlyForecastItem(hour: Hour) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = time, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text(
+                text = time,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
             Spacer(modifier = Modifier.height(8.dp))
             // Weather Icon
             Icon(
@@ -66,7 +81,11 @@ fun HourlyForecastItem(hour: Hour) {
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "${hour.tempC.toInt()}°", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+            Text(
+                text = "${hour.tempC.toInt()}°",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         }
     }
 }

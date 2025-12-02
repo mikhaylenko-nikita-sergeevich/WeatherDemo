@@ -19,15 +19,12 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.mikhaylenko.weatherdemo.presentation.theme.WeatherDemoTheme
 import com.mikhaylenko.weatherdemo.presentation.ui.CurrentWeatherCard
 import com.mikhaylenko.weatherdemo.presentation.ui.DailyForecastList
-import com.mikhaylenko.weatherdemo.presentation.ui.ErrorDialog
+import com.mikhaylenko.weatherdemo.presentation.ui.ErrorScreen
 import com.mikhaylenko.weatherdemo.presentation.ui.HourlyForecastRow
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -86,7 +83,11 @@ fun WeatherScreen(
                             .verticalScroll(rememberScrollState()),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box(modifier = Modifier.fillMaxSize().weight(1f)) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .weight(1f)
+                        ) {
                             CurrentWeatherCard(
                                 location = state.location,
                                 currentWeather = state.currentWeather
@@ -103,23 +104,10 @@ fun WeatherScreen(
                 }
 
                 is WeatherState.Error -> {
-                    var showError by remember { mutableStateOf(true) }
-                    if (showError) {
-                        ErrorDialog(
-                            errorMessage = state.message,
-                            onRetry = {
-                                showError = false
-                                onRetry()
-                            },
-                            onDismiss = { showError = false }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // Empty box for now, dialog handles error
-                    }
+                    ErrorScreen(
+                        errorMessage = state.message,
+                        onRetry = onRetry
+                    )
                 }
             }
         }
