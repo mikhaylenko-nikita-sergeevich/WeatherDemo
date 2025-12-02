@@ -54,30 +54,27 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun refresh() {
+        _isRefreshing.value = true
         viewModelScope.launch {
-            _isRefreshing.value = true
-            try {
-                repository.getWeatherForecast()
-                    .onSuccess { response ->
-                        val allHours = response.forecast.forecastday.flatMap { it.hour }
-                        val upcoming24Hours = allHours.filter {
-                            it.timeEpoch >= response.location.localtimeEpoch
-                        }.take(24)
+            repository.getWeatherForecast()
+                .onSuccess { response ->
+                    val allHours = response.forecast.forecastday.flatMap { it.hour }
+                    val upcoming24Hours = allHours.filter {
+                        it.timeEpoch >= response.location.localtimeEpoch
+                    }.take(24)
 
-                        _weatherState.value = WeatherState.Success(
-                            location = response.location,
-                            currentWeather = response.current,
-                            hourlyForecast = upcoming24Hours,
-                            dailyForecast = response.forecast.forecastday
-                        )
-                    }
-                    .onFailure { error ->
-                        _weatherState.value =
-                            WeatherState.Error(error.localizedMessage ?: "Unknown error")
-                    }
-            } finally {
-                _isRefreshing.value = false
-            }
+                    _weatherState.value = WeatherState.Success(
+                        location = response.location,
+                        currentWeather = response.current,
+                        hourlyForecast = upcoming24Hours,
+                        dailyForecast = response.forecast.forecastday
+                    )
+                }
+                .onFailure { error ->
+                    _weatherState.value =
+                        WeatherState.Error(error.localizedMessage ?: "Unknown error")
+                }
+            _isRefreshing.value = false
         }
     }
 }

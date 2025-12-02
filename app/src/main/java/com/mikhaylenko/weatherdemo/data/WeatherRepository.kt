@@ -2,7 +2,6 @@ package com.mikhaylenko.weatherdemo.data
 
 import com.google.gson.GsonBuilder
 import com.mikhaylenko.weatherdemo.data.model.WeatherApiResponse
-import com.mikhaylenko.weatherdemo.data.WeatherApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

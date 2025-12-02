@@ -33,7 +33,7 @@ fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
             modifier = Modifier
                 .padding(vertical = 24.dp, horizontal = 16.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(), // Ensure column fills available height
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween // Distribute content vertically
         ) {
