@@ -52,6 +52,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    //image
+    implementation(libs.coil.compose)
     //network
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
