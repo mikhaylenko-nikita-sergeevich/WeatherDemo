@@ -59,8 +59,8 @@ fun HourlyForecastItem(hour: Hour) {
     val time = hourlyTimeFormatter.format(Date(hour.timeEpoch * 1000))
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp) // Subtle elevation
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier.padding(vertical = 12.dp, horizontal = 8.dp),
@@ -73,9 +73,8 @@ fun HourlyForecastItem(hour: Hour) {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(8.dp))
-            // Weather Icon
             Icon(
-                imageVector = Icons.Default.CloudQueue, // Placeholder icon
+                imageVector = Icons.Default.CloudQueue, //todo
                 contentDescription = hour.condition.text,
                 tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(24.dp)

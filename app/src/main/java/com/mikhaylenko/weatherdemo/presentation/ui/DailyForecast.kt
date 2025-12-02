@@ -34,14 +34,14 @@ fun DailyForecastList(dailyForecast: List<Forecastday>, modifier: Modifier = Mod
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            text = stringResource(R.string.daily_forecast_title), // A title for the daily forecast section
+            text = stringResource(R.string.daily_forecast_title),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(4.dp) // Smaller spacing for daily items
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             dailyForecast.forEach { day ->
                 DailyForecastItem(day = day)
@@ -57,8 +57,8 @@ fun DailyForecastItem(day: Forecastday) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp) // Subtle elevation
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(
             modifier = Modifier
@@ -75,12 +75,12 @@ fun DailyForecastItem(day: Forecastday) {
 
             // Weather Icon
             Icon(
-                imageVector = Icons.Default.WbSunny, // Placeholder icon
+                imageVector = Icons.Default.WbSunny,//todo
                 contentDescription = day.day.condition.text,
                 tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .weight(1f)
-                    .wrapContentWidth(Alignment.CenterHorizontally) // Center the icon
+                    .wrapContentWidth(Alignment.CenterHorizontally)
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {

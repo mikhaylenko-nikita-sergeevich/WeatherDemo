@@ -1,5 +1,6 @@
 package com.mikhaylenko.weatherdemo.presentation.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,44 +22,49 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikhaylenko.weatherdemo.R
 import com.mikhaylenko.weatherdemo.data.model.CurrentWeather
 import com.mikhaylenko.weatherdemo.data.model.Location
+import kotlin.math.roundToInt
 
 @Composable
-fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
+fun CurrentWeatherCard(
+    location: Location,
+    currentWeather: CurrentWeather
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp) // Subtle elevation
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier
                 .padding(vertical = 24.dp, horizontal = 16.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(), // Ensure column fills available height
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween // Distribute content vertically
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = "${location.name}, ${location.country}",
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface
             )
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(R.string.current_weather_title),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant // Lighter secondary text
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Weather Icon
             Icon(
-                imageVector = Icons.Default.Cloud, // Placeholder icon, replace with specific weather icons
+                imageVector = Icons.Default.Cloud,//todo!
                 contentDescription = currentWeather.condition.text,
                 tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(60.dp)
@@ -66,7 +72,7 @@ fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "${currentWeather.tempC.toInt()}°", // Display as integer, matching reference
+                text = "${currentWeather.tempC.roundToInt()}°",
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -77,13 +83,12 @@ fun CurrentWeatherCard(location: Location, currentWeather: CurrentWeather) {
             )
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Wind information
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = Icons.Default.Waves, // Placeholder for wind icon
+                    imageVector = Icons.Default.Waves,
                     contentDescription = stringResource(R.string.wind_icon_alt),
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(24.dp)
