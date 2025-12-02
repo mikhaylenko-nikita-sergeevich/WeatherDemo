@@ -1,4 +1,4 @@
-package com.mikhaylenko.weatherdemo.data.network
+package com.mikhaylenko.weatherdemo.data
 
 import com.mikhaylenko.weatherdemo.data.model.WeatherApiResponse
 import retrofit2.http.GET

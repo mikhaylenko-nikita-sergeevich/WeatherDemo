@@ -1,4 +1,4 @@
-package com.mikhaylenko.weatherdemo
+package com.mikhaylenko.weatherdemo.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,14 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.mikhaylenko.weatherdemo.presentation.WeatherState
-import com.mikhaylenko.weatherdemo.presentation.WeatherViewModel
 import com.mikhaylenko.weatherdemo.presentation.ui.CurrentWeatherCard
 import com.mikhaylenko.weatherdemo.presentation.ui.DailyForecastList
 import com.mikhaylenko.weatherdemo.presentation.ui.ErrorDialog
 import com.mikhaylenko.weatherdemo.presentation.ui.HourlyForecastRow
-import com.mikhaylenko.weatherdemo.ui.theme.WeatherDemoTheme
+import com.mikhaylenko.weatherdemo.presentation.theme.WeatherDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -73,7 +68,6 @@ fun WeatherScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // ... (existing Spacer for gradient)
         PullToRefreshBox(
             isRefreshing = isRefreshing,
             onRefresh = onRefresh,

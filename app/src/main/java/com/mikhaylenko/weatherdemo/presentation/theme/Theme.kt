@@ -1,4 +1,4 @@
-package com.mikhaylenko.weatherdemo.ui.theme
+package com.mikhaylenko.weatherdemo.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

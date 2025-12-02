@@ -1,6 +1,6 @@
 package com.mikhaylenko.weatherdemo.di
 
-import com.mikhaylenko.weatherdemo.data.repository.WeatherRepository
+import com.mikhaylenko.weatherdemo.data.WeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
