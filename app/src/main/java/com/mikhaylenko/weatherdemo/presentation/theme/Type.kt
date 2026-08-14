@@ -9,14 +9,14 @@ import androidx.compose.ui.unit.sp
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Light, // Keep light for large numbers
-        fontSize = 60.sp, // Slightly reduced to fit more
+        fontWeight = FontWeight.Light,
+        fontSize = 60.sp,
         letterSpacing = (-0.25).sp
     ),
     headlineSmall = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp, // Slightly larger for emphasis
+        fontSize = 24.sp,
         letterSpacing = 0.sp
     ),
     bodyLarge = TextStyle(
