@@ -5,4 +5,5 @@
 /build/
 /captures/
 
-local.properties
+/local.properties
+/secrets.properties
