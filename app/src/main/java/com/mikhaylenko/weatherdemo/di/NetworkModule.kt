@@ -4,21 +4,20 @@ import com.google.gson.GsonBuilder
 import com.mikhaylenko.weatherdemo.BuildConfig
 import com.mikhaylenko.weatherdemo.data.WeatherApiKeyInterceptor
 import com.mikhaylenko.weatherdemo.data.WeatherApiService
-import com.mikhaylenko.weatherdemo.data.WeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 private const val WEATHER_API_BASE_URL = "https://api.weatherapi.com/v1/"
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object NetworkModule {
 
     @Provides
     @Singleton
@@ -53,11 +52,5 @@ object AppModule {
     fun provideWeatherApiService(
         retrofit: Retrofit
     ): WeatherApiService = retrofit.create(WeatherApiService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideWeatherRepository(
-        apiService: WeatherApiService
-    ) = WeatherRepository(apiService = apiService)
 
 }
