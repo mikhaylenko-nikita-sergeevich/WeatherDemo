@@ -4,45 +4,50 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.mikhaylenko.weatherdemo.data.model.CurrentWeather
-import com.mikhaylenko.weatherdemo.data.model.Forecastday
-import com.mikhaylenko.weatherdemo.data.model.Hour
-import com.mikhaylenko.weatherdemo.data.model.Location
+import com.mikhaylenko.weatherdemo.presentation.WeatherState
 
 @Composable
 fun WeatherScreen(
-    location: Location,
-    currentWeather: CurrentWeather,
-    hourlyForecast: List<Hour>,
-    dailyForecast: List<Forecastday>
+    state: WeatherState.Content,
+    onRefresh: () -> Unit
 ) {
-    Column(
+    PullToRefreshBox(
+        isRefreshing = state.isRefreshing,
+        onRefresh = onRefresh,
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .safeDrawingPadding()
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CurrentWeatherCard(
-                location = location,
-                currentWeather = currentWeather
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                CurrentWeatherCard(
+                    location = state.forecast.location,
+                    currentWeather = state.forecast.currentWeather
+                )
+            }
+            HourlyForecastRow(
+                hourlyForecast = state.forecast.hourlyForecast,
+                modifier = Modifier.fillMaxWidth()
+            )
+            DailyForecastList(
+                dailyForecast = state.forecast.dailyForecast
             )
         }
-        HourlyForecastRow(
-            hourlyForecast = hourlyForecast,
-            modifier = Modifier.fillMaxWidth()
-        )
-        DailyForecastList(
-            dailyForecast = dailyForecast
-        )
     }
 }

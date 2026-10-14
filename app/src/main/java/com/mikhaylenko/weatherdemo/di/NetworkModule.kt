@@ -8,12 +8,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Dns
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.InetAddress
 import javax.inject.Singleton
 
 private const val WEATHER_API_BASE_URL = "https://api.weatherapi.com/v1/"
+private const val WEATHER_API_IP = "79.127.134.226"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -30,6 +33,10 @@ object NetworkModule {
     fun provideOkHttpClient(
         apiKeyInterceptor: WeatherApiKeyInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
+        // временный хак из-за проблем доступа к остальным ip вервиса
+        .dns { hostname ->
+            listOf(InetAddress.getByName(WEATHER_API_IP))
+        }
         .addInterceptor(apiKeyInterceptor)
         .build()
 

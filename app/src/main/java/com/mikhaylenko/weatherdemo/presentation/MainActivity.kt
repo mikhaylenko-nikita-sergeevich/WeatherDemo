@@ -1,91 +1,105 @@
 package com.mikhaylenko.weatherdemo.presentation
 
+import android.Manifest
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.mikhaylenko.weatherdemo.presentation.theme.WeatherDemoTheme
 import com.mikhaylenko.weatherdemo.presentation.ui.ErrorScreen
+import com.mikhaylenko.weatherdemo.presentation.ui.LoadingScreen
 import com.mikhaylenko.weatherdemo.presentation.ui.WeatherScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     private val viewModel: WeatherViewModel by viewModels()
+    private val locationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
+    private val permissionLauncher = getPermissionLauncher()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             WeatherDemoTheme {
-                val state by viewModel.weatherState.collectAsState()
-                val isRefreshing by viewModel.isRefreshing.collectAsState()
+                val state by viewModel.weatherState.collectAsStateWithLifecycle()
+
                 MainScreen(
                     state = state,
-                    isRefreshing = isRefreshing,
-                    onRefresh = viewModel::refreshWeather,
-                    onRetry = { viewModel.loadWeather() }
+                    onRefresh = viewModel::onRefresh,
+                    onRetry = viewModel::onRetry,
+                    onRequestPermission = ::onRequestPermission
                 )
             }
         }
-    }
-}
-
-@Composable
-fun MainScreen(
-    state: WeatherState,
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
-    onRetry: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh,
-            modifier = Modifier
-                .fillMaxSize()
-                .safeDrawingPadding()
-        ) {
-            when (state) {
-                is WeatherState.Loading -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is WeatherEvent.ShowError -> showErrorToast(event)
                     }
-                }
-
-                is WeatherState.Success -> {
-                    WeatherScreen(
-                        location = state.location,
-                        currentWeather = state.currentWeather,
-                        hourlyForecast = state.hourlyForecast,
-                        dailyForecast = state.dailyForecast
-                    )
-                }
-
-                is WeatherState.Error -> {
-                    ErrorScreen(
-                        errorMessage = state.message,
-                        onRetry = onRetry
-                    )
                 }
             }
         }
+    }
+
+    @Composable
+    fun MainScreen(
+        state: WeatherState,
+        onRefresh: () -> Unit,
+        onRetry: () -> Unit,
+        onRequestPermission: () -> Unit
+    ) {
+        Log.d("!!!", "MainScreen(${state.javaClass.simpleName})")
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            when (state) {
+                is WeatherState.Loading -> LoadingScreen()
+                is WeatherState.Content -> WeatherScreen(state, onRefresh)
+                is WeatherState.Error -> ErrorScreen(state, onRetry, onRequestPermission)
+            }
+        }
+    }
+
+    private fun showErrorToast(error: WeatherEvent.ShowError) {
+        Toast.makeText(
+            this@MainActivity,
+            error.text,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun getPermissionLauncher() = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            viewModel.onLocationAccessGranted()
+        } else {
+            viewModel.onPermissionDenied()
+        }
+    }
+
+    private fun onRequestPermission() {
+        permissionLauncher.launch(locationPermission)
     }
 }

@@ -24,13 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mikhaylenko.weatherdemo.R
-import com.mikhaylenko.weatherdemo.data.model.CurrentWeather
-import com.mikhaylenko.weatherdemo.data.model.Location
+import com.mikhaylenko.weatherdemo.domain.model.CurrentWeather
+import com.mikhaylenko.weatherdemo.domain.model.WeatherLocation
 import kotlin.math.roundToInt
 
 @Composable
 fun CurrentWeatherCard(
-    location: Location,
+    location: WeatherLocation,
     currentWeather: CurrentWeather
 ) {
     Card(
@@ -62,7 +62,7 @@ fun CurrentWeatherCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             AsyncImage(
-                model = "https:" + currentWeather.condition.icon,
+                model = currentWeather.condition.iconUrl,
                 contentDescription = currentWeather.condition.text,
                 modifier = Modifier.size(60.dp)
             )

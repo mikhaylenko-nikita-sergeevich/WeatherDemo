@@ -20,13 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mikhaylenko.weatherdemo.R
-import com.mikhaylenko.weatherdemo.data.model.Forecastday
+import com.mikhaylenko.weatherdemo.domain.model.DailyForecast
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun DailyForecastList(dailyForecast: List<Forecastday>, modifier: Modifier = Modifier) {
+fun DailyForecastList(dailyForecast: List<DailyForecast>, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -50,7 +50,7 @@ fun DailyForecastList(dailyForecast: List<Forecastday>, modifier: Modifier = Mod
 }
 
 @Composable
-fun DailyForecastItem(day: Forecastday) {
+fun DailyForecastItem(day: DailyForecast) {
     val dateFormatter = SimpleDateFormat("EEE, d MMM", Locale("ru"))
     val date = dateFormatter.format(Date(day.dateEpoch * 1000))
 
@@ -73,8 +73,8 @@ fun DailyForecastItem(day: Forecastday) {
             )
 
             AsyncImage(
-                model = "https:" + day.day.condition.icon,
-                contentDescription = day.day.condition.text,
+                model = day.condition.iconUrl,
+                contentDescription = day.condition.text,
                 modifier = Modifier
                     .weight(1f)
                     .wrapContentWidth(Alignment.CenterHorizontally)
@@ -83,13 +83,13 @@ fun DailyForecastItem(day: Forecastday) {
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "${day.day.maxtempC.toInt()}°",
+                    text = "${day.maxTempC.toInt()}°",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "${day.day.mintempC.toInt()}°",
+                    text = "${day.minTempC.toInt()}°",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

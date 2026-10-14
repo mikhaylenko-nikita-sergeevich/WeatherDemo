@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mikhaylenko.weatherdemo.R
-import com.mikhaylenko.weatherdemo.data.model.Hour
+import com.mikhaylenko.weatherdemo.domain.model.HourlyForecast
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -29,7 +29,7 @@ import java.util.Locale
 private val hourlyTimeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
 @Composable
-fun HourlyForecastRow(hourlyForecast: List<Hour>, modifier: Modifier = Modifier) {
+fun HourlyForecastRow(hourlyForecast: List<HourlyForecast>, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -53,7 +53,7 @@ fun HourlyForecastRow(hourlyForecast: List<Hour>, modifier: Modifier = Modifier)
 }
 
 @Composable
-fun HourlyForecastItem(hour: Hour) {
+fun HourlyForecastItem(hour: HourlyForecast) {
     val time = hourlyTimeFormatter.format(Date(hour.timeEpoch * 1000))
 
     Card(
@@ -72,7 +72,7 @@ fun HourlyForecastItem(hour: Hour) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             AsyncImage(
-                model = "https:" + hour.condition.icon,
+                model = hour.condition.iconUrl,
                 contentDescription = hour.condition.text,
                 modifier = Modifier.size(24.dp)
             )

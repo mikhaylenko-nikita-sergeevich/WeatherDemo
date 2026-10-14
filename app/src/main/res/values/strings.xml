@@ -12,4 +12,18 @@
     <string name="retry_btn">Повторить</string>
 
     <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="location_permission_denied">Для загрузки более точного прогноза разрешите доступ к точному местоположению</string>
+    <string name="location_unavailable_error">Не удалось определить текущее местоположение</string>
+    <string name="no_internet_error">Нет подключения к интернету. Проверьте соединение и попробуйте снова</string>
+    <string name="network_error">Ошибка сети. Попробуйте снова</string>
+    <string name="timeout_error">Сервис погоды не ответил вовремя. Попробуйте снова</string>
+    <string name="weather_service_auth_error">Сервис погоды временно недоступен</string>
+    <string name="weather_service_rate_limit_error">Слишком много запросов. Попробуйте немного позже</string>
+    <string name="weather_service_unavailable_error">Сервис погоды временно недоступен. Попробуйте позже</string>
+    <string name="weather_request_error">Не удалось загрузить прогноз погоды</string>
+    <string name="invalid_response_error">Сервис погоды вернул некорректные данные</string>
+
+    <string name="location_permission_denied_title">Необходим доступ к геолокации</string>
+    <string name="location_permission_denied_message">Для предосталвения точного прогноза требуется доступ к геолокации устройства</string>
+    <string name="location_permission_denied_button">Предоставить доступ</string>
 </resources>

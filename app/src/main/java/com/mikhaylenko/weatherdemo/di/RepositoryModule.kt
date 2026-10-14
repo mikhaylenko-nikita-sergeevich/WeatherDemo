@@ -1,6 +1,6 @@
 package com.mikhaylenko.weatherdemo.di
 
-import com.mikhaylenko.weatherdemo.data.WeatherRepository
+import com.mikhaylenko.weatherdemo.domain.network.WeatherRepository
 import com.mikhaylenko.weatherdemo.data.WeatherRepositoryImpl
 import dagger.Binds
 import dagger.Module

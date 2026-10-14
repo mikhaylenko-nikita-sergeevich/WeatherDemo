@@ -65,6 +65,9 @@ kotlin {
         implementation(libs.retrofit)
         implementation(libs.converter.gson)
         implementation(libs.okhttp.logging.interceptor)
+        //location
+        implementation(libs.play.services.location)
+        implementation(libs.kotlinx.coroutines.play.services)
         //di
         implementation(libs.hilt.android)
         ksp(libs.hilt.compiler)
